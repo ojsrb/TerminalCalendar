@@ -1,8 +1,8 @@
-# TerminalCalender
-*An inuitive calender in your terminal*
+# TerminalCalendar
+*An inuitive calendar in your terminal*
 
 ## Features
-- Add New Events and Reminders to your calender
+- Add New Events and Reminders to your calendar
 - View upcoming events this week, month, year, and all time, sorted by due date.
 - Delete and edit events
 
@@ -17,15 +17,15 @@ This will install all of TerminalCalender's dependencies. (It has a lot)
 
 Next you can run the program with
 
-`python3 calender.py [ARGUMENTS]` or
-`python calender.py [ARGUMENTS]`
+`python3 calendar.py [ARGUMENTS]` or
+`python calendar.py [ARGUMENTS]`
 
 ## Arguments
-`add` - add an event or reminder to your calender. 
+`add` - add an event or reminder to your calendar. 
 
-`show` - view your calender.
+`show` - view your calendar.
 
-`edit` - edit an event on your calender.
+`edit` - edit an event on your calendar.
 
 `about` - get information about the author (me!).
 
