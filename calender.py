@@ -3,7 +3,6 @@
 import click
 from inquirer import *
 import datetime
-from apple_calendar_integration import ICloudCalendarAPI
 
 version = "0.1.0"
 
