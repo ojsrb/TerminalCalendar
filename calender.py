@@ -4,7 +4,7 @@ import click
 from inquirer import *
 import datetime
 
-version = "0.0.1"
+version = "0.1.0"
 
 @click.group("calender")
 @click.version_option(version, prog_name="TerminalCalender")
@@ -77,8 +77,6 @@ def show():
 
     file.close()
 
-
-
 @calender.command()
 def add():
     """Add an event to your calendar."""
@@ -132,5 +130,84 @@ def add():
         event = prompt(event)
         file.write(f'event, {event["name"]}, {event["date"].replace("-", "")}, {event["start"].replace(":", "")}, {event["end"].replace(":", "")}\n')
     file.close()
+
+@calender.command()
+def about():
+    """About the app."""
+
+    click.echo("TerminalCalender was created using click by Owen Schmidt, 2025, for Hackclub's TerminalCraft program.")
+
+@calender.command()
+def edit():
+    """Edit your calendar."""
+    file = open("data.csv", "r")
+    lines = file.read().splitlines()
+
+    entries = []
+
+    for i in lines[1:]:
+        words = i.split()
+        newEntry = {"name": words[1].removesuffix(","), "date": int(words[2].removesuffix(",")), "start": int(words[3].removesuffix(",")), "end": int(words[4].removesuffix(","))}
+        entries.append(newEntry)
+
+    entries = sorted(entries, key=lambda e: (e["date"], e["start"], e["end"]))
+
+    events = []
+
+    for i in entries:
+        finalDate = ""
+        finalDate += str(i["date"])[0:4] + "-" + str(i["date"])[4:6] + "-" + str(i["date"])[6:8]
+
+        startTime = ""
+        startTime += str(i["start"])[0:2] + ":" + str(i["start"])[2:4]
+
+        endTime = ""
+        endTime += str(i["end"])[0:2] + ":" + str(i["end"])[2:4]
+
+        events.append(f'{i["name"]}, on {finalDate} from {startTime} to {endTime}.')
+
+    eventQuestion = [List(
+        "event",
+        message="Pick an event to edit.",
+        choices=events
+    )]
+
+    answer = prompt(eventQuestion)["event"]
+
+    index = events.index(answer)
+
+    questions = [
+        List(
+            "field",
+            message="What field do you want to edit?",
+            choices=["Name", "Date", "Start", "End"]
+        ),
+        Text(
+            "newValue",
+            message="What is the new value? Date: [YYYY-MM-DD], Time: (24 Hour)[HH:MM]",
+        )
+    ]
+
+    answers = prompt(questions)
+    try:
+        if answers["field"] == "Name":
+            entries[index]["name"] = str(answers["newValue"])
+        elif answers["field"] == "Date":
+            entries[index]["date"] = str(answers["newValue"].replace("-", ""))
+        elif answers["field"] == "Start":
+            entries[index]["start"] = str(answers["newValue"].replace(":", ""))
+        elif answers["field"] == "End":
+            entries[index]["end"] = str(answers["newValue"].replace(":", ""))
+    except KeyError:
+        click.secho("Sorry, something went wrong.", fg="red")
+
+    file = open("data.csv", "w")
+    newText = "Type, Name, Date, Start, End\n"
+    for i in entries:
+        newText += f"{i['name']}, {i['date']}, {i['start']}, {i['end']}\n"
+
+    file.write(newText)
+    file.close()
+
 if __name__ == "__main__":
     calender()
