@@ -3,15 +3,16 @@
 import click
 from inquirer import *
 import datetime
+from apple_calendar_integration import ICloudCalendarAPI
 
 version = "0.1.0"
 
-@click.group("calender")
+@click.group("calendar")
 @click.version_option(version, prog_name="TerminalCalender")
-def calender():
+def calendar():
     pass
 
-@calender.command()
+@calendar.command()
 def show():
     """Show your calendar."""
 
@@ -77,7 +78,7 @@ def show():
 
     file.close()
 
-@calender.command()
+@calendar.command()
 def add():
     """Add an event to your calendar."""
     typeQuestion = [List(
@@ -131,13 +132,13 @@ def add():
         file.write(f'event, {event["name"]}, {event["date"].replace("-", "")}, {event["start"].replace(":", "")}, {event["end"].replace(":", "")}\n')
     file.close()
 
-@calender.command()
+@calendar.command()
 def about():
     """About the app."""
 
     click.echo("TerminalCalender was created using click by Owen Schmidt, 2025, for Hackclub's TerminalCraft program.")
 
-@calender.command()
+@calendar.command()
 def edit():
     """Edit your calendar."""
     file = open("data.csv", "r")
@@ -210,4 +211,4 @@ def edit():
     file.close()
 
 if __name__ == "__main__":
-    calender()
+    calendar()
