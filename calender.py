@@ -147,7 +147,7 @@ def edit():
 
     for i in lines[1:]:
         words = i.split()
-        newEntry = {"name": words[1].removesuffix(","), "date": int(words[2].removesuffix(",")), "start": int(words[3].removesuffix(",")), "end": int(words[4].removesuffix(","))}
+        newEntry = {"type": words[0], "name": words[1].removesuffix(","), "date": int(words[2].removesuffix(",")), "start": int(words[3].removesuffix(",")), "end": int(words[4].removesuffix(","))}
         entries.append(newEntry)
 
     entries = sorted(entries, key=lambda e: (e["date"], e["start"], e["end"]))
@@ -204,7 +204,7 @@ def edit():
     file = open("data.csv", "w")
     newText = "Type, Name, Date, Start, End\n"
     for i in entries:
-        newText += f"{i['name']}, {i['date']}, {i['start']}, {i['end']}\n"
+        newText += f"{i['type']}, {i['name']}, {i['date']}, {i['start']}, {i['end']}\n"
 
     file.write(newText)
     file.close()
